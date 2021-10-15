@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        #videos{
+            display: grid;
+            grid-template-columns: repeat(4,20%);
+            gap:100px;
+        }
+    </style>
+  </head>
+  <body>
+    <input type="text" id="query" placeholder="Search for a Video" />
+
+    <button onclick="searchVideos()">Search</button>
+
+    <div id="videos"></div>
+  </body>
+</html>
+
+<script>
+</script>
+<!-- my key youtube -->
+<!-- AIzaSyB6D4ulj8vEPbNnXUhPESyJrd1JfQQzQSQ -->
+<!-- https://youtube.googleapis.com/youtube/v3/search?q=csk&type=video&key=[YOUR_API_KEY] -->
+<script>
+    let videos=document.getElementById("videos")
+    async function searchVideos(){
+        let query= document.getElementById("query").value;
+        let res=await fetch(`https://youtube.googleapis.com/youtube/v3/search?q=${query}&type=video&key=AIzaSyB6D4ulj8vEPbNnXUhPESyJrd1JfQQzQSQ&maxResults=20`);
+        
+
+// Authorization: Bearer [YOUR_ACCESS_TOKEN]
+// Accept: application/json
+
+        let data= await res.json()
+        appendvideos(data.items)
+        console.log(data.items)
+    }
+    function appendvideos(video_data){
+// destructring 
+videos.innerHTML=null;
+video_data.forEach(({id:{videoId}}) => {
+    console.log(videoId);
+let div=document.createElement("div");
+div.style.width="360px"
+div.innerHTML = `<iframe width="260" height="215" src="https://www.youtube.com/embed/${videoId}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+videos.append(div)
+});
+
+    }
+</script>
